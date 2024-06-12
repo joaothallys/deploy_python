@@ -97,7 +97,7 @@ def upload_file():
         print(f"Unexpected error during file upload: {e}")
         return jsonify(error='Internal Server Error'), 500
 
-# Rota para obter arquivo carregado
+# Rota para obter arquivo carregado com tipo condicional
 @app.route('/uploads/<filename>', methods=['GET'])
 def uploaded_file(filename):
     try:
@@ -110,7 +110,13 @@ def uploaded_file(filename):
                 row = cursor.fetchone()
                 if row:
                     file_url = row[0]
-                    return jsonify(fileUrl=file_url), 200
+                    # Verifica se o tipo do arquivo é CSV
+                    if filename.endswith('.csv'):
+                        # Retorna a URL do arquivo com o tipo /csv
+                        return jsonify(fileUrl=file_url, type='csv'), 200
+                    else:
+                        # Retorna a URL do arquivo sem especificar o tipo
+                        return jsonify(fileUrl=file_url), 200
                 else:
                     print(f"File not found in database for filename: {filename}")
                     return jsonify(error='File not found'), 404
