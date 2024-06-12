@@ -64,6 +64,12 @@ def upload_file():
         if file.filename == '':
             return jsonify(error='No selected file'), 400
 
+        # Verificar se o arquivo é do tipo text/csv
+        if file.mimetype != 'text/csv':
+            # Se não for, converter para text/csv
+            file.stream.seek(0)
+            file = io.BytesIO(file.stream.read().decode('utf-8').encode('utf-8-sig'))
+
         filename = secure_filename(file.filename)
         s3_client = create_s3_client()
         if not s3_client:
