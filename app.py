@@ -113,7 +113,7 @@ def uploaded_file(filename):
                     # Verifica se o tipo do arquivo é CSV
                     if filename.endswith('.csv'):
                         # Retorna a URL do arquivo com o tipo /csv
-                        return jsonify(fileUrl=file_url, type='csv'), 200
+                        return jsonify(fileUrl=file_url, type='text/csv'), 200
                     else:
                         # Retorna a URL do arquivo sem especificar o tipo
                         return jsonify(fileUrl=file_url), 200
